@@ -16,6 +16,7 @@
 - Nathan MACIEL LAVERGNE
 - Caio ESMAGNOTO
 - Thi Minh Khuê PHAM
+- Salma GUIRAT
 
 ## Partie 1 :
 - [ ] IGrapheConst : interface utilisé par Dijkstra
