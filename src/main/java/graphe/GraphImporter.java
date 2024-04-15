@@ -1,4 +1,4 @@
-package main;
+package graphe;
 
 
 import java.io.File;

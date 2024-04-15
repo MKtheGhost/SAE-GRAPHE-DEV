@@ -1,4 +1,4 @@
-package test;
+package graphe;
 
 
 import static org.junit.jupiter.api.Assertions.*;
