@@ -74,10 +74,9 @@ public class GrapheLArcs extends Graphe {
     @Override
     public List<String> getSucc(String sommet) {
         ArrayList<String> listSucc = new ArrayList<>();
-        for (int i = 0; i < listeSommets.size() ; ++i)
-            for (int j = 0; j < listeArc.size(); ++j) {
-                if (listeArc.get(i).getSource().equals(sommet)) listSucc.add(listeArc.get(i).getDestination());
-            }
+        for (Arc arc : listeArc) {
+            if (arc.getSource().equals(sommet)) listSucc.add(arc.getDestination());
+        }
         return listSucc;
     }
 
