@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 class IGrapheTest {
 	private final IGraphe[] graphes = {
 			new GrapheLArcs(), new GrapheLAdj(),
-			new GrapheMAdj()
+			new GrapheMAdj() , new GrapheHHAdj()
 	};
 	
 	// graphe de l'exercice 3.1 du poly de maths
@@ -123,15 +123,15 @@ class IGrapheTest {
                 Path file1 = iterator1.next();
                 Path file2 = iterator2.next();
 
-                //IGraphe g = new GrapheHHAdj();
-                //Arc arc = GraphImporter.importer(file1.toFile(), g);
+                IGraphe g = new GrapheHHAdj();
+                Arc arc = GraphImporter.importer(file1.toFile(), g);
 
                 List<Integer> listeEntiers = new ArrayList<>();
                 int distance_attendue = GraphImporter.importerReponse(file2.toString(), listeEntiers);
 
                 System.out.println("\ngraphe: " + file1.getFileName());
                 System.out.println("chemin a trouver " + arc.getSource()+ " "+ arc.getDestination());
-                //System.out.println("Graphe de  " + g.getSommets().size() + " sommets");
+                System.out.println("Graphe de  " + g.getSommets().size() + " sommets");
 
                 System.out.println("reponse: " + file2.getFileName());
                 if (distance_attendue >=0) {

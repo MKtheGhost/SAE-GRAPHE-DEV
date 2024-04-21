@@ -3,32 +3,32 @@ package main.java.graphe;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GrapheLArcs extends Graphe {
-    private HashMap<HashMap<String,String>,Integer> listeArc;
-    private ArrayList<String> listeSommet;
+    private ArrayList<Arc> listeArc;
+    private ArrayList<String> listeSommets;
 
-    public GrapheLArcs(){
-        listeArc = new HashMap<>();
-        listeSommet = new ArrayList<>();
+    public GrapheLArcs () {
+        listeArc = new ArrayList<>();
+        listeSommets = new ArrayList<>();
     }
-
-    public GrapheLArcs(String s){
+    public GrapheLArcs (String s) {
         this();
-        this.peupler(s);
+        peupler(s);
     }
 
     @Override
     public void ajouterSommet(String noeud) {
-        if(!contientSommet(noeud))
-            listeSommet.add(noeud);
+        if(!contientSommet(noeud)) listeSommets.add(noeud);
     }
 
     @Override
     public void ajouterArc(String source, String destination, Integer valeur) {
-        ajouterSommet(source);
-        ajouterSommet(destination);
+        //ajoute le sommet source si inexistant
+        if(!contientSommet(source)) ajouterSommet(source);
+
+        //ajoute le sommet destinataire si inexistant
+        if(!contientSommet(destination)) ajouterSommet(destination);
 
         if (contientArc(source,destination))
             throw new IllegalArgumentException("Un arc existe déjà entre les sommets : " + source + " et " + destination);
@@ -36,33 +36,30 @@ public class GrapheLArcs extends Graphe {
         if (valeur < 0)
             throw new IllegalArgumentException("Les valuations ne doivent pas etre negatives " + valeur);
 
-        HashMap<String,String> arc = new HashMap<>();
-        arc.put(source,destination);
-        listeArc.put(arc,valeur);
+        listeArc.add(new Arc(source,destination,valeur));
     }
 
     @Override
     public void oterSommet(String noeud) {
-        // on supprime les arcs en lien avec ce sommet
-        for(Map.Entry<HashMap<String,String>, Integer> entry : listeArc.entrySet()){
-            if(entry.getKey().containsKey(noeud) || entry.getKey().containsValue(noeud))
-                listeArc.remove(entry);
+        listeSommets.remove(noeud);
+        for (String sommet : listeSommets) {
+            if (contientArc(noeud,sommet)) oterArc(noeud, sommet);
         }
-        // on supprime le sommet
-        listeSommet.remove(noeud);
+        for (String sommet : listeSommets) {
+            if (contientArc(sommet,noeud)) oterArc(sommet, noeud);
+        }
     }
 
     @Override
     public void oterArc(String source, String destination) {
         if (contientSommet(source) && contientSommet(destination)) {
-
             if (!contientArc(source, destination)) {
                 throw new IllegalArgumentException("Aucun arc n'existe entre les sommets : " + source + " et " + destination);
             }
-
-            HashMap<String,String> arc = new HashMap<>();
-            arc.put(source,destination);
-            listeArc.remove(arc);
+            for (int i = 0; i < listeArc.size() ; ++i) {
+                if (listeArc.get(i).getSource().equals(source) && listeArc.get(i).getDestination().equals(destination))
+                    listeArc.remove(i);
+            }
         }
         else {
             throw new IllegalArgumentException("Sommet source et/ou sommet de destination introuvable : " + source + ", " + destination);
@@ -71,41 +68,40 @@ public class GrapheLArcs extends Graphe {
 
     @Override
     public List<String> getSommets() {
-        return listeSommet;
+        return listeSommets;
     }
 
     @Override
     public List<String> getSucc(String sommet) {
-        List<String> successors = new ArrayList<>();
-
-        for (Map.Entry<HashMap<String,String>, Integer> entry : listeArc.entrySet()) {
-            if(entry.getKey().containsKey(sommet))
-                successors.add(entry.getKey().get(sommet));
-        }
-        return successors;
+        ArrayList<String> listSucc = new ArrayList<>();
+        for (int i = 0; i < listeSommets.size() ; ++i)
+            for (int j = 0; j < listeArc.size(); ++j) {
+                if (listeArc.get(i).getSource().equals(sommet)) listSucc.add(listeArc.get(i).getDestination());
+            }
+        return listSucc;
     }
 
     @Override
     public int getValuation(String src, String dest) {
-        for(Map.Entry<HashMap<String,String>, Integer> entry : listeArc.entrySet()){
-            if(entry.getKey().containsKey(src) && entry.getKey().containsValue(dest))
-                return entry.getValue();
+        for (Arc arc : listeArc) {
+            if (arc.getSource().equals(src) && arc.getDestination().equals(dest))
+                return arc.getValuation();
         }
         return 0;
     }
 
     @Override
     public boolean contientSommet(String sommet) {
-        return listeSommet.contains(sommet);
+        for (String listeSommet : listeSommets) if (listeSommet.equals(sommet)) return true;
+        return false;
     }
 
     @Override
     public boolean contientArc(String src, String dest) {
-        for(Map.Entry<HashMap<String,String>, Integer> entry : listeArc.entrySet()){
-            if(entry.getKey().containsKey(src) && entry.getKey().containsValue(dest))
+        for (Arc arc : listeArc) {
+            if (arc.getSource().equals(src) && arc.getDestination().equals(dest))
                 return true;
         }
-
         return false;
     }
 }

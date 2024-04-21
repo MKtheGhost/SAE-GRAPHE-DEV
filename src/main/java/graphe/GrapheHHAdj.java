@@ -1,25 +1,32 @@
 package main.java.graphe;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class GrapheLAdj extends Graphe{
-    HashMap<String,HashMap<String,Integer>> listeAdj;
+public class GrapheHHAdj extends Graphe {
+    private HashMap<HashMap<String,String>,Integer> listeArc;
+    private ArrayList<String> listeSommet;
 
-    public GrapheLAdj(){
-        listeAdj = new HashMap<>();
+    public GrapheHHAdj(){
+        listeArc = new HashMap<>();
+        listeSommet = new ArrayList<>();
     }
-    public GrapheLAdj(String s) {
+
+    public GrapheHHAdj(String s){
         this();
-        peupler(s);
+        this.peupler(s);
     }
+
+    @Override
     public void ajouterSommet(String noeud) {
         if(!contientSommet(noeud))
-            listeAdj.put(noeud, new HashMap<>());
+            listeSommet.add(noeud);
     }
 
     @Override
     public void ajouterArc(String source, String destination, Integer valeur) {
-        // on ajoute les sommets si ils n'existent pas
         ajouterSommet(source);
         ajouterSommet(destination);
 
@@ -29,27 +36,33 @@ public class GrapheLAdj extends Graphe{
         if (valeur < 0)
             throw new IllegalArgumentException("Les valuations ne doivent pas etre negatives " + valeur);
 
-        // on ajoute le sommet
-        listeAdj.get(source).put(destination,valeur);
+        HashMap<String,String> arc = new HashMap<>();
+        arc.put(source,destination);
+        listeArc.put(arc,valeur);
     }
 
     @Override
     public void oterSommet(String noeud) {
         // on supprime les arcs en lien avec ce sommet
-        for(HashMap<String,Integer> successeur : listeAdj.values()){
-            listeAdj.values().remove(successeur);
+        for(Map.Entry<HashMap<String,String>, Integer> entry : listeArc.entrySet()){
+            if(entry.getKey().containsKey(noeud) || entry.getKey().containsValue(noeud))
+                listeArc.remove(entry);
         }
         // on supprime le sommet
-        listeAdj.remove(noeud);
+        listeSommet.remove(noeud);
     }
 
     @Override
     public void oterArc(String source, String destination) {
         if (contientSommet(source) && contientSommet(destination)) {
+
             if (!contientArc(source, destination)) {
                 throw new IllegalArgumentException("Aucun arc n'existe entre les sommets : " + source + " et " + destination);
             }
-             listeAdj.get(source).remove(destination);
+
+            HashMap<String,String> arc = new HashMap<>();
+            arc.put(source,destination);
+            listeArc.remove(arc);
         }
         else {
             throw new IllegalArgumentException("Sommet source et/ou sommet de destination introuvable : " + source + ", " + destination);
@@ -58,40 +71,41 @@ public class GrapheLAdj extends Graphe{
 
     @Override
     public List<String> getSommets() {
-        List<String> sommets = new ArrayList<>(listeAdj.keySet());
-        Collections.sort(sommets);
-        return sommets;
+        return listeSommet;
     }
 
     @Override
     public List<String> getSucc(String sommet) {
         List<String> successors = new ArrayList<>();
-        if (listeAdj.containsKey(sommet)) {
-            for (Map.Entry<String, Integer> entry : listeAdj.get(sommet).entrySet()) {
-                successors.add(entry.getKey());
-            }
+
+        for (Map.Entry<HashMap<String,String>, Integer> entry : listeArc.entrySet()) {
+            if(entry.getKey().containsKey(sommet))
+                successors.add(entry.getKey().get(sommet));
         }
         return successors;
     }
 
     @Override
     public int getValuation(String src, String dest) {
-        if(contientArc(src,dest)){
-            for(Map.Entry<String, Integer> successeurs : listeAdj.get(src).entrySet()){
-                if(successeurs.getKey().equals(dest))
-                    return successeurs.getValue();
-            }
+        for(Map.Entry<HashMap<String,String>, Integer> entry : listeArc.entrySet()){
+            if(entry.getKey().containsKey(src) && entry.getKey().containsValue(dest))
+                return entry.getValue();
         }
         return 0;
     }
 
     @Override
     public boolean contientSommet(String sommet) {
-        return listeAdj.containsKey(sommet);
+        return listeSommet.contains(sommet);
     }
 
     @Override
     public boolean contientArc(String src, String dest) {
-        return listeAdj.get(src).containsKey(dest);
+        for(Map.Entry<HashMap<String,String>, Integer> entry : listeArc.entrySet()){
+            if(entry.getKey().containsKey(src) && entry.getKey().containsValue(dest))
+                return true;
+        }
+
+        return false;
     }
 }
