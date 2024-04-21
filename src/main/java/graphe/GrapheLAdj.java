@@ -37,7 +37,8 @@ public class GrapheLAdj extends Graphe{
     public void oterSommet(String noeud) {
         // on supprime les arcs en lien avec ce sommet
         for(HashMap<String,Integer> successeur : listeAdj.values()){
-            listeAdj.values().remove(successeur);
+            if(successeur.containsKey(noeud) || successeur.containsValue(noeud))
+                listeAdj.values().remove(successeur);
         }
         // on supprime le sommet
         listeAdj.remove(noeud);

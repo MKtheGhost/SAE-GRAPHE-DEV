@@ -1,16 +1,15 @@
 package main.java.graphe;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class GrapheLArcs extends Graphe {
     private ArrayList<Arc> listeArc;
-    private ArrayList<String> listeSommets;
+    private ArrayList<String> listeSommet;
 
     public GrapheLArcs () {
         listeArc = new ArrayList<>();
-        listeSommets = new ArrayList<>();
+        listeSommet = new ArrayList<>();
     }
     public GrapheLArcs (String s) {
         this();
@@ -19,7 +18,7 @@ public class GrapheLArcs extends Graphe {
 
     @Override
     public void ajouterSommet(String noeud) {
-        if(!contientSommet(noeud)) listeSommets.add(noeud);
+        if(!contientSommet(noeud)) listeSommet.add(noeud);
     }
 
     @Override
@@ -41,11 +40,11 @@ public class GrapheLArcs extends Graphe {
 
     @Override
     public void oterSommet(String noeud) {
-        listeSommets.remove(noeud);
-        for (String sommet : listeSommets) {
+        listeSommet.remove(noeud);
+        for (String sommet : listeSommet) {
             if (contientArc(noeud,sommet)) oterArc(noeud, sommet);
         }
-        for (String sommet : listeSommets) {
+        for (String sommet : listeSommet) {
             if (contientArc(sommet,noeud)) oterArc(sommet, noeud);
         }
     }
@@ -68,7 +67,7 @@ public class GrapheLArcs extends Graphe {
 
     @Override
     public List<String> getSommets() {
-        return listeSommets;
+        return listeSommet;
     }
 
     @Override
@@ -91,7 +90,7 @@ public class GrapheLArcs extends Graphe {
 
     @Override
     public boolean contientSommet(String sommet) {
-        for (String listeSommet : listeSommets) if (listeSommet.equals(sommet)) return true;
+        for (String listeSommet : listeSommet) if (listeSommet.equals(sommet)) return true;
         return false;
     }
 

@@ -120,7 +120,7 @@ class IGrapheTest {
 //            Iterator<Path> iterator2 = files2.iterator();
 //
 //            while (iterator1.hasNext() && iterator2.hasNext()) {
-//                Path file1 = iterator1.next();
+//                Path filQe1 = iterator1.next();
 //                Path file2 = iterator2.next();
 //
 //                IGraphe g = new GrapheHHAdj();

@@ -13,7 +13,7 @@ public class GrapheMAdj extends Graphe {
 
     public GrapheMAdj(){
         matrice = new int[0][0];
-        ArrayList<String> listeSommet = new ArrayList<>();
+        listeSommet = new ArrayList<>();
     }
 
     public GrapheMAdj(String str){
@@ -117,7 +117,9 @@ public class GrapheMAdj extends Graphe {
 
     @Override
     public boolean contientSommet(String sommet) {
-        return listeSommet.contains(sommet);
+        if(!listeSommet.isEmpty())
+            return listeSommet.contains(sommet);
+        return false;
     }
 
     @Override
