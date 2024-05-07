@@ -1,5 +1,10 @@
 package main.java.graphe;
 
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.Stack;
+
 // ajouterSommet ne fait rien si un sommet est deja present
 // ajouterArc leve une IllegalArgumentException si l'arc est deja present
 // ajouterArc ajoute les sommets s'ils ne sont pas deja presents
@@ -33,5 +38,41 @@ public interface IGraphe extends IGrapheConst {
 	             ajouterArc(src, dest, val);
 	        }
 	    }
+	}
+
+	public default void Dijkstra(Graphe g, String source, HashMap<String,Integer> dist, HashMap<String,String> prev) {
+		Set<String> visitee = new LinkedHashSet<>(); // liste d'element unique
+		Stack<String> pile = new Stack<>();
+
+		pile.push(source);
+		dist.put(source,0);
+
+		while(!pile.isEmpty()){ // tant qu'on a pas visité tous les sommets du graphe
+			String noeud = pile.pop();
+
+			if(!visitee.contains(noeud)){ // si on a pas encore visité ce noeud
+				visitee.add(noeud);
+
+				// on rajoute à la pile tout les successeurs de ce noeud
+				for (String succ : g.getSucc(noeud)){
+					pile.push(succ);
+
+					// on rajoute le chemin le plus court si il n'a pas été visité
+					if(!prev.containsKey(succ)){
+						prev.put(succ,noeud);
+					}
+					// on rajoute le plus court chemin si il n'existe pas sinon on remplace
+					if(!dist.containsKey(succ)){
+						dist.put(succ, calculChemin(dist,prev,succ,noeud));
+					} else if (calculChemin(dist,prev,succ,noeud) < dist.get(succ)) {
+						dist.replace(succ,calculChemin(dist,prev,succ,noeud));
+						prev.replace(succ,noeud);
+					}
+				}
+			}
+		}
+	}
+	public default int calculChemin(HashMap<String, Integer> dist, HashMap<String, String> prev, String succ, String noeud){
+		return getValuation(noeud,succ) + dist.get(prev.get(noeud));
 	}
 }
