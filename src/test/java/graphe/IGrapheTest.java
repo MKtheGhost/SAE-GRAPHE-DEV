@@ -16,9 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Test;
-
 class IGrapheTest {
+	//toutes les représentations d'une graphe
 	private final IGraphe[] graphes = {
 			new GrapheLArcs(), new GrapheLAdj(),
 			new GrapheMAdj() , new GrapheHHAdj()
@@ -50,17 +49,28 @@ class IGrapheTest {
 			+ "B-G(3), "
 			+ "C-H(2) ";
 	
-	@Test
+	//@Test
+	//peupler toutes les représentation de graphes
 	void exo3_1Maths() {
+		long startTime;
+		long duration;
 		for (IGraphe g : graphes) {
+			startTime = System.nanoTime();
 			g.peupler(g31a); 
-			tester3_1(g);			
+			tester3_1(g);
+
+			duration = System.nanoTime() - startTime;
+			System.out.println("duration : " + (duration / 1000000) + " ms");
 		}
 	}
-	
+
+	//tester les fonctionalités des graphes
 	void tester3_1(IGraphe g) {
+		//create immutable list of predefined sommets
 		List<String> sommets_exp = List.of("A","B","C","D","E","F","G","H","I","J");
+		//create list of sommets from sommets of g
 		List<String> sommets = new ArrayList<String>(g.getSommets()); // pas forcement triee
+
 		Collections.sort(sommets);
 		assertEquals(sommets_exp, sommets);
 		assertTrue(g.contientSommet("C"));
@@ -85,9 +95,10 @@ class IGrapheTest {
 		assertThrows(IllegalArgumentException.class,
 				() -> g.ajouterArc("A", "B", -1)); // valuation negative
 	}
-	
+
+	//test importation
 	void petiteImporation(IGraphe g) {
-		Arc a = GraphImporter.importer("graphes/orig/g-10-1.txt", g);
+		Arc a = GraphImporter.importer("graphes/orig/g-10-1.txt", g); //
 		assertEquals("1-3(5), "
 				+ "10-3(3), 2-1(5), 2-3(5), 2-5(4), "
 				+ "3-4(4), 3-5(4), 4-10(1), 4-2(1), 4-7(3), "
@@ -98,16 +109,17 @@ class IGrapheTest {
 		assertEquals("7", a.getDestination());
 	}
 
-	@Test
+	//@Test
 	void petitTestImportation() {
 		for (IGraphe g : graphes)
 			petiteImporation(g);
 	}
 	
-	@Test
+	//@Test
 	void importer() throws NumberFormatException, FileNotFoundException {
 		String graphesRep = "graphes";
         String reponsesRep = "reponses";
+
         try {
             List<Path> files1 = Files.list(Paths.get(graphesRep))
                                      .filter(Files::isRegularFile)
@@ -120,7 +132,7 @@ class IGrapheTest {
             Iterator<Path> iterator2 = files2.iterator();
 
             while (iterator1.hasNext() && iterator2.hasNext()) {
-                Path filQe1 = iterator1.next();
+                Path file1 = iterator1.next();
                 Path file2 = iterator2.next();
 
                 IGraphe g = new GrapheHHAdj();
@@ -129,6 +141,7 @@ class IGrapheTest {
                 List<Integer> listeEntiers = new ArrayList<>();
                 int distance_attendue = GraphImporter.importerReponse(file2.toString(), listeEntiers);
 
+				// test dijkstra
                 System.out.println("\ngraphe: " + file1.getFileName());
                 System.out.println("chemin a trouver " + arc.getSource()+ " "+ arc.getDestination());
                 System.out.println("Graphe de  " + g.getSommets().size() + " sommets");

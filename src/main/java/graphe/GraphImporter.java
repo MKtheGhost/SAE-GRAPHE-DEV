@@ -48,12 +48,14 @@ public class GraphImporter {
 
         return distance;
     }
-	
+
+	//importer un arc à partir d'un chemin et d'un graphe
 	public static Arc importer(String filePath, IGraphe g)  {
 		File file = new File(filePath);
 		return importer(file, g);
 	}
 
+	// importer un arc à partir d'un fichier et d'un graphe
 	public static Arc importer(File file, IGraphe g)  {
 		try (Scanner sc = new Scanner(file)) {
 			String line;
@@ -68,7 +70,7 @@ public class GraphImporter {
 				if (sc.hasNextLine())
 					g.ajouterArc(a.getSource(), a.getDestination(), a.getValuation());
 			}
-			return a;
+			return a; // return last line/arc in file
 		} catch (FileNotFoundException e) {
 			throw new IllegalArgumentException("Pas de graphe dans " + file);
 		} catch (NumberFormatException e) {
@@ -76,6 +78,7 @@ public class GraphImporter {
 		}
 	}
 
+	// parce a string into an arc
 	public static Arc parse(String string) {
 		String[] parts = string.split(" ");
 		String source;
