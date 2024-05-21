@@ -135,7 +135,7 @@ class IGrapheTest {
                 Path file1 = iterator1.next();
                 Path file2 = iterator2.next();
 
-                IGraphe g = new GrapheHHAdj();
+                IGraphe g = new GrapheLArcs();
                 Arc arc = GraphImporter.importer(file1.toFile(), g);
 
                 List<Integer> listeEntiers = new ArrayList<>();
@@ -155,7 +155,7 @@ class IGrapheTest {
                 Map<String, Integer> dist = new HashMap<>();
                 Map<String, String> prev = new HashMap<>();
                 long debut = System.nanoTime();
-                Dijkstra.dijkstra(g, arc.getSource(), dist, prev);
+                Dijkstra.DijkstraLucie2(g, arc.getSource(), dist, prev);
                 long fin = System.nanoTime();
                 System.out.println("dijkstra a dure " + (fin - debut)/1000000 + " millisecondes");
 
