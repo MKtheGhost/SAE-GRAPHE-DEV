@@ -54,20 +54,41 @@ public class Dijkstra {
                     // on rajoute le chemin le plus court si il n'a pas été visité
                     if(!prev.containsKey(succ)){
                         prev.put(succ,noeud);
+                        //System.out.println(prev);
                     }
+
                     // on rajoute le plus court chemin si il n'existe pas sinon on remplace
                     if(!dist.containsKey(succ)){
                         dist.put(succ, calculChemin(dist,prev,succ,noeud,g));
-                    } else if (calculChemin(dist,prev,succ,noeud,g) < dist.get(succ)) {
+                    }
+
+                    if (calculChemin(dist,prev,succ,noeud,g) < dist.get(succ)) {
                         dist.replace(succ,calculChemin(dist,prev,succ,noeud,g));
+                        System.out.println("replace condition");
                         prev.replace(succ,noeud);
                     }
+                    //System.out.println(dist);
+                    //System.out.println("test");
+                    //System.out.println(noeud);
+                    //System.out.println(succ);
+                    System.out.println(calculChemin(dist,prev,succ,noeud,g));
+                    System.out.println(dist.get(succ));
+
+
+
                 }
             }
         }
     }
 
+    // calcul chemin entre le noeud et la source
     public static int calculChemin(Map<String, Integer> dist, Map<String, String> prev, String succ, String noeud,IGraphe g){
-        return g.getValuation(noeud,succ) + dist.get(prev.get(noeud));
+        // chemin = valuation entre noeud de g et son successeur + valuation des chemins d'avant
+        if(dist.get(prev.get(noeud)) == null){
+            return g.getValuation(noeud,succ);
+        }
+        else{
+            return g.getValuation(noeud,succ) + dist.get(prev.get(noeud));
+        }
     }
 }
