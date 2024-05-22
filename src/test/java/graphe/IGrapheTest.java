@@ -52,15 +52,10 @@ class IGrapheTest {
 	//@Test
 	//peupler toutes les représentation de graphes
 	void exo3_1Maths() {
-		long startTime;
-		long duration;
+		System.out.println("test exo");
 		for (IGraphe g : graphes) {
-			startTime = System.nanoTime();
-			g.peupler(g31a); 
+			g.peupler(g31a);
 			tester3_1(g);
-
-			duration = System.nanoTime() - startTime;
-			System.out.println("duration : " + (duration / 1000000) + " ms");
 		}
 	}
 
@@ -96,9 +91,10 @@ class IGrapheTest {
 				() -> g.ajouterArc("A", "B", -1)); // valuation negative
 	}
 
+
 	//test importation
 	void petiteImporation(IGraphe g) {
-		Arc a = GraphImporter.importer("graphes/orig/g-10-1.txt", g); //
+		Arc a = GraphImporter.importer("graphes/orig/g-10-1.txt", g);
 		assertEquals("1-3(5), "
 				+ "10-3(3), 2-1(5), 2-3(5), 2-5(4), "
 				+ "3-4(4), 3-5(4), 4-10(1), 4-2(1), 4-7(3), "
@@ -111,12 +107,16 @@ class IGrapheTest {
 
 	//@Test
 	void petitTestImportation() {
+		System.out.println("test importation");
 		for (IGraphe g : graphes)
 			petiteImporation(g);
 	}
+
+	//======================== correcte =================================
 	
 	//@Test
 	void importer() throws NumberFormatException, FileNotFoundException {
+		System.out.println("test importer");
 		String graphesRep = "graphes";
         String reponsesRep = "reponses";
 
@@ -131,7 +131,10 @@ class IGrapheTest {
             Iterator<Path> iterator1 = files1.iterator();
             Iterator<Path> iterator2 = files2.iterator();
 
+		    System.out.println(iterator1.hasNext() );
+			System.out.println(iterator2.hasNext() );
             while (iterator1.hasNext() && iterator2.hasNext()) {
+				System.out.println("test while");
                 Path file1 = iterator1.next();
                 Path file2 = iterator2.next();
 
