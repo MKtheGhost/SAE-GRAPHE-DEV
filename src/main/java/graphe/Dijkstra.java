@@ -61,8 +61,7 @@ public class Dijkstra {
                     if(!dist.containsKey(succ)){
                         dist.put(succ, calculChemin(dist,prev,succ,noeud,g));
                     }
-
-                    if (calculChemin(dist,prev,succ,noeud,g) < dist.get(succ)) {
+                    else if (calculChemin(dist,prev,succ,noeud,g) < dist.get(succ)) {
                         dist.replace(succ,calculChemin(dist,prev,succ,noeud,g));
                         System.out.println("replace condition");
                         prev.replace(succ,noeud);
@@ -88,7 +87,8 @@ public class Dijkstra {
             return g.getValuation(noeud,succ);
         }
         else{
-            return g.getValuation(noeud,succ) + dist.get(prev.get(noeud));
+            //return g.getValuation(noeud,succ) + dist.get(prev.get(noeud));
+            return g.getValuation(noeud,succ) + dist.get(noeud);
         }
     }
 }

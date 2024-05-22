@@ -1,15 +1,16 @@
 package main.java.graphe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GrapheLArcs extends Graphe {
     private ArrayList<Arc> listeArc;
-    private ArrayList<String> listeSommet;
+    private ArrayList<String> listeSommets;
 
     public GrapheLArcs () {
         listeArc = new ArrayList<>();
-        listeSommet = new ArrayList<>();
+        listeSommets = new ArrayList<>();
     }
     public GrapheLArcs (String s) {
         this();
@@ -18,7 +19,7 @@ public class GrapheLArcs extends Graphe {
 
     @Override
     public void ajouterSommet(String noeud) {
-        if(!contientSommet(noeud)) listeSommet.add(noeud);
+        if(!contientSommet(noeud)) listeSommets.add(noeud);
     }
 
     @Override
@@ -40,11 +41,11 @@ public class GrapheLArcs extends Graphe {
 
     @Override
     public void oterSommet(String noeud) {
-        listeSommet.remove(noeud);
-        for (String sommet : listeSommet) {
+        listeSommets.remove(noeud);
+        for (String sommet : listeSommets) {
             if (contientArc(noeud,sommet)) oterArc(noeud, sommet);
         }
-        for (String sommet : listeSommet) {
+        for (String sommet : listeSommets) {
             if (contientArc(sommet,noeud)) oterArc(sommet, noeud);
         }
     }
@@ -67,15 +68,16 @@ public class GrapheLArcs extends Graphe {
 
     @Override
     public List<String> getSommets() {
-        return listeSommet;
+        return listeSommets;
     }
 
     @Override
     public List<String> getSucc(String sommet) {
         ArrayList<String> listSucc = new ArrayList<>();
-        for (Arc arc : listeArc) {
-            if (arc.getSource().equals(sommet)) listSucc.add(arc.getDestination());
-        }
+        for (int i = 0; i < listeSommets.size() ; ++i)
+            for (int j = 0; j < listeArc.size(); ++j) {
+                if (listeArc.get(i).getSource().equals(sommet)) listSucc.add(listeArc.get(i).getDestination());
+            }
         return listSucc;
     }
 
@@ -90,7 +92,7 @@ public class GrapheLArcs extends Graphe {
 
     @Override
     public boolean contientSommet(String sommet) {
-        for (String listeSommet : listeSommet) if (listeSommet.equals(sommet)) return true;
+        for (String listeSommet : listeSommets) if (listeSommet.equals(sommet)) return true;
         return false;
     }
 
