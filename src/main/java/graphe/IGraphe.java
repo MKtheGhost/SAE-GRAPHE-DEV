@@ -34,7 +34,6 @@ public interface IGraphe extends IGrapheConst {
 	             int val = Integer.parseInt(target
 	                	.substring(target.indexOf('(') + 1,
 	                				   target.indexOf(')')));
-	             ajouterSommet(dest);
 	             ajouterArc(src, dest, val);
 	        }
 	    }

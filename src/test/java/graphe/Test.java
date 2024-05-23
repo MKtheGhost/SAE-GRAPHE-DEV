@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 public final class Test {
     public static void main(final String[] args) {
         IGrapheTest test3_1 = new IGrapheTest();
-
         // peupler toutes les graphes et les tester
         test3_1.exo3_1Maths();
 
