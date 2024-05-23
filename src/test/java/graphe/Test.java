@@ -15,6 +15,7 @@ public final class Test {
         IGrapheTest testImportation = new IGrapheTest();
         testImportation.petitTestImportation();
 
+        //test de Dijkstra
         IGrapheTest testImporter = new IGrapheTest();
         try {
             testImporter.importer();

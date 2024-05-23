@@ -153,7 +153,7 @@ class IGrapheTest {
                 Map<String, String> prev = new HashMap<>();
 
                 long debut = System.nanoTime();
-                Dijkstra.DijkstraLucie2(g, arc.getSource(), dist, prev);
+                Dijkstra.DijkstraTest(g, arc.getSource(), dist, prev);
                 long fin = System.nanoTime();
                 System.out.println("dijkstra a dure " + (fin - debut)/1000000 + " millisecondes");
 
