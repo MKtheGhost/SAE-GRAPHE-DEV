@@ -52,7 +52,6 @@ class IGrapheTest {
 	//@Test
 	//peupler toutes les représentation de graphes
 	void exo3_1Maths() {
-		System.out.println("test exo");
 		for (IGraphe g : graphes) {
 			g.peupler(g31a);
 			tester3_1(g);
@@ -107,7 +106,6 @@ class IGrapheTest {
 
 	//@Test
 	void petitTestImportation() {
-		System.out.println("test importation");
 		for (IGraphe g : graphes)
 			petiteImporation(g);
 	}
@@ -116,7 +114,6 @@ class IGrapheTest {
 	
 	//@Test
 	void importer() throws NumberFormatException, FileNotFoundException {
-		System.out.println("test importer");
 		String graphesRep = "graphes";
         String reponsesRep = "reponses";
 
@@ -131,10 +128,7 @@ class IGrapheTest {
             Iterator<Path> iterator1 = files1.iterator();
             Iterator<Path> iterator2 = files2.iterator();
 
-		    System.out.println(iterator1.hasNext() );
-			System.out.println(iterator2.hasNext() );
             while (iterator1.hasNext() && iterator2.hasNext()) {
-				System.out.println("test while");
                 Path file1 = iterator1.next();
                 Path file2 = iterator2.next();
 
@@ -157,6 +151,7 @@ class IGrapheTest {
 
                 Map<String, Integer> dist = new HashMap<>();
                 Map<String, String> prev = new HashMap<>();
+
                 long debut = System.nanoTime();
                 Dijkstra.DijkstraLucie2(g, arc.getSource(), dist, prev);
                 long fin = System.nanoTime();

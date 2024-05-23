@@ -35,6 +35,7 @@ public class Dijkstra {
                 }
             }
         }
+        System.out.println(dist);
     }
 
     public static void DijkstraLucie2(IGraphe g, String source, Map<String,Integer> dist, Map<String,String> prev) {
@@ -46,6 +47,8 @@ public class Dijkstra {
 
         while (!file.isEmpty()) {
             String noeud = file.poll();
+            int tempValSucc = 0;
+            String tempSucc = noeud;
             for (String succ : g.getSucc(noeud)) {
                 if (!visitee.contains(succ)) {
                     visitee.add(succ);
@@ -56,29 +59,31 @@ public class Dijkstra {
                         prev.put(succ,noeud);
                         //System.out.println(prev);
                     }
-
                     // on rajoute le plus court chemin si il n'existe pas sinon on remplace
                     if(!dist.containsKey(succ)){
                         dist.put(succ, calculChemin(dist,prev,succ,noeud,g));
                     }
 
-                    if (calculChemin(dist,prev,succ,noeud,g) < dist.get(succ)) {
-                        dist.replace(succ,calculChemin(dist,prev,succ,noeud,g));
-                        System.out.println("replace condition");
+                    if (tempValSucc < dist.get(succ)) {
+                        dist.replace(tempSucc,calculChemin(dist,prev,succ,noeud,g));
                         prev.replace(succ,noeud);
                     }
+
+                    tempValSucc = dist.get(succ);
+                    tempSucc = succ;
                     //System.out.println(dist);
                     //System.out.println("test");
                     //System.out.println(noeud);
                     //System.out.println(succ);
-                    System.out.println(calculChemin(dist,prev,succ,noeud,g));
-                    System.out.println(dist.get(succ));
+                    //System.out.println(calculChemin(dist,prev,succ,noeud,g));
+                    //System.out.println(dist.get(succ));
 
 
 
                 }
             }
         }
+        System.out.println(dist);
     }
 
     // calcul chemin entre le noeud et la source
