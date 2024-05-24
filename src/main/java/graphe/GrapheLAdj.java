@@ -3,7 +3,7 @@ package main.java.graphe;
 import java.util.*;
 
 public class GrapheLAdj extends Graphe{
-    HashMap<String,HashMap<String,Integer>> listeAdj;
+    private HashMap<String,HashMap<String,Integer>> listeAdj;
 
     public GrapheLAdj(){
         listeAdj = new HashMap<>();

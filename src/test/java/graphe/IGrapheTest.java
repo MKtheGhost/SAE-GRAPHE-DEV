@@ -109,8 +109,6 @@ class IGrapheTest {
 		for (IGraphe g : graphes)
 			petiteImporation(g);
 	}
-
-	//======================== correcte =================================
 	
 	//@Test
 	void importer() throws NumberFormatException, FileNotFoundException {

@@ -120,7 +120,7 @@ public class Dijkstra {
     }
 
     // calcul chemin entre le noeud et la source
-    public static int calculChemin(Map<String, Integer> dist, Map<String, String> prev, String succ, String noeud,IGraphe g){
+    private static int calculChemin(Map<String, Integer> dist, Map<String, String> prev, String succ, String noeud,IGraphe g){
         // chemin = valuation entre noeud de g et son successeur + valuation des chemins d'avant
         if(dist.get(prev.get(noeud)) == null){
             return g.getValuation(noeud,succ);
