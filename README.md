@@ -21,7 +21,7 @@ Création des représentations des graphes Matrice d'adjacence, liste d'adjacenc
 ## Partie 2 :
 Création et test de la classe Dijkstra et comparaison du temps d'exécution de Dijkstra sur les différentes représentation de graphes, en utilisant des graphes de taille différentes.
 
-### Tests de de d'exécution :
+### Tests de de d'exécution (résultat de test dans fichier images) :
 
 Graphes de 10 sommets :
 - GrapheLArcs : 3 millisecondes
