@@ -4,41 +4,37 @@ import java.util.*;
 
 public class Dijkstra {
 
-    public static void dijkstraPile(IGraphe g, String source, Map<String,Integer> dist, Map<String,String> prev) {
-        Set<String> visitee = new LinkedHashSet<>(); // liste d'element unique
-        Stack<String> pile = new Stack<>();
 
-        pile.push(source);
-        dist.put(source,0);
+        public static void dijkstraPile(IGraphe g, String source, Map<String, Integer> dist, Map<String, String> prev) {
+            Set<String> visitee = new LinkedHashSet<>();
+            Stack<String> pile = new Stack<>();
 
-        while(!pile.isEmpty()){ // tant qu'on a pas visité tous les sommets du graphe
-            String noeud = pile.pop();
+            pile.push(source);
+            dist.put(source, 0);
 
-            if(!visitee.contains(noeud)){ // si on a pas encore visité ce noeud
-                visitee.add(noeud);
+            while (!pile.isEmpty()) {
+                String noeud = pile.pop();
 
-                // on rajoute à la pile tout les successeurs de ce noeud
-                for (String succ : g.getSucc(noeud)){
-                    pile.push(succ);
+                if (!visitee.contains(noeud)) {
+                    visitee.add(noeud);
 
-                    // on rajoute le chemin le plus court si il n'a pas été visité
-                    if(!prev.containsKey(succ)){
-                        prev.put(succ,noeud);
-                    }
-                    // on rajoute le plus court chemin si il n'existe pas sinon on remplace
-                    if(!dist.containsKey(succ)){
-                        dist.put(succ, calculChemin(dist,prev,succ,noeud,g));
-                    } else if (calculChemin(dist,prev,succ,noeud,g) < dist.get(succ)) {
-                        dist.replace(succ,calculChemin(dist,prev,succ,noeud,g));
-                        prev.replace(succ,noeud);
+                    for (String succ : g.getSucc(noeud)) {
+                        if (!visitee.contains(succ)) {
+                            pile.push(succ);
+                        }
+
+                        int newDist = dist.get(noeud) + g.getValuation(noeud, succ);
+                        if (newDist < dist.getOrDefault(succ, Integer.MAX_VALUE)) {
+                            dist.put(succ, newDist);
+                            prev.put(succ, noeud);
+                        }
                     }
                 }
             }
         }
-        System.out.println(dist);
-    }
 
-    public static void DijkstraFile(IGraphe g, String source, Map<String,Integer> dist, Map<String,String> prev) {
+
+    public static void dijkstraFile(IGraphe g, String source, Map<String,Integer> dist, Map<String,String> prev) {
         Set<String> visitee = new LinkedHashSet<String>();
         Queue<String> file = new LinkedList<String>();
         file.add(source);
@@ -76,10 +72,20 @@ public class Dijkstra {
                 tempSucc = succ;
             }
         }
-        System.out.println(dist);
     }
 
-    public static void DijkstraTest(IGraphe g, String source, Map<String,Integer> dist, Map<String,String> prev) {
+    // calcul chemin entre le noeud et la source
+    private static int calculChemin(Map<String, Integer> dist, Map<String, String> prev, String succ, String noeud,IGraphe g){
+        // chemin = valuation entre noeud de g et son successeur + valuation des chemins d'avant
+        if(dist.get(prev.get(noeud)) == null){
+            return g.getValuation(noeud,succ);
+        }
+        else{
+            return g.getValuation(noeud,succ) + dist.get(noeud);
+        }
+    }
+
+    public static void dijkstraTest(IGraphe g, String source, Map<String,Integer> dist, Map<String,String> prev) {
         PriorityQueue<String> queue = new PriorityQueue<>(Comparator.comparingInt(dist::get));
         Set<String> visited = new HashSet<>();
 
@@ -119,16 +125,54 @@ public class Dijkstra {
 
     }
 
-    // calcul chemin entre le noeud et la source
-    private static int calculChemin(Map<String, Integer> dist, Map<String, String> prev, String succ, String noeud,IGraphe g){
-        // chemin = valuation entre noeud de g et son successeur + valuation des chemins d'avant
-        if(dist.get(prev.get(noeud)) == null){
-            return g.getValuation(noeud,succ);
+
+
+
+    // Method 1
+    // Dijkstra's Algorithm
+    public static void dijkstra(IGraphe g, String source, Map<String, Integer> dist, Map<String, String> prev) {
+        PriorityQueue<String> pq = new PriorityQueue<>(Comparator.comparingInt(dist::get));
+        Set<String> settled = new HashSet<>();
+        Map<String, Integer> pqMap = new HashMap<>(); // Track the values in the priority queue
+
+        // Initialisation
+        for (String sommet : g.getSommets()) {
+            dist.put(sommet, Integer.MAX_VALUE);
+            prev.put(sommet, null);
         }
-        else{
-            return g.getValuation(noeud,succ) + dist.get(noeud);
+        dist.put(source, 0);
+        pq.add(source);
+        pqMap.put(source, 0);
+
+        while (!pq.isEmpty()) {
+            String u = pq.poll();
+            pqMap.remove(u);
+
+            if (!settled.add(u)) {
+                continue;
+            }
+
+            // Traiter les voisins
+            for (String voisin : g.getSucc(u)) {
+                if (!settled.contains(voisin)) {
+                    int newDist = dist.get(u) + g.getValuation(u, voisin);
+
+                    if (newDist < dist.get(voisin)) {
+                        dist.put(voisin, newDist);
+                        prev.put(voisin, u);
+
+                        // Only add to the queue if it's not already there or the new distance is shorter
+                        if (!pqMap.containsKey(voisin) || newDist < pqMap.get(voisin)) {
+                            pq.add(voisin);
+                            pqMap.put(voisin, newDist);
+                        }
+                    }
+                }
+            }
         }
     }
+
+
 
 }
 
