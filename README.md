@@ -6,10 +6,10 @@
 - sous-typage
   
 ## Membres de l'équipe :
-- Lucie YAN
-- Nathan MACIEL LAVERGNE
-- Caio ESMAGNOTO
-- Thi Minh Khuê PHAM
+- Lucie YAN (luciole)
+- Nathan MACIEL LAVERGNE (JAIDISSHASOWN)
+- Caio ESMAGNOTO (esmagnoto)
+- Thi Minh Khuê PHAM (MKtheGhost)
 - Salma GUIRAT
 
 ## Partie 1 :
